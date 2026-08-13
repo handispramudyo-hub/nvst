@@ -1,0 +1,39 @@
+# OS
+Thumbs.db
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Node
+node_modules/
+dist/
+build/
+.expo/
+*.log
+.expo-shared/
+
+# PHP / Laravel
+/vendor/
+backend/.env
+backend/.env.backup
+backend/.phpunit.result.cache
+backend/storage/logs/*
+backend/storage/framework/cache/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*
+!backend/storage/framework/cache/data/.gitignore
+!backend/storage/logs/.gitignore
+backend/storage/logs/*.log
+backend/public/storage
+
+# Env files
+.env
+.env.local
+.env.*.local
+.env.production
+
+# Compiled
+*.min.js
