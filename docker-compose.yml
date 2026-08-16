@@ -44,6 +44,9 @@ services:
     container_name: nivest-php
     restart: unless-stopped
     working_dir: /var/www/html
+    environment:
+      DB_HOST: mysql
+      REDIS_HOST: redis
     volumes:
       - ./backend:/var/www/html
     depends_on:

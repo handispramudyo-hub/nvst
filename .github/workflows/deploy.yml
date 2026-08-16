@@ -1,0 +1,46 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          umask 077
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/vps_key
+
+      - name: Sync code to VPS
+        run: |
+          rsync -az -e "ssh -i ~/.ssh/vps_key -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=~/.ssh/known_hosts" \
+            --delete \
+            --exclude '.git' \
+            --exclude 'vendor' \
+            --exclude 'node_modules' \
+            --exclude 'dist' \
+            --exclude 'backend/.env' \
+            --exclude 'backend/storage' \
+            --exclude 'backend/public/storage' \
+            --exclude '*.log' \
+            ./ "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/var/www/nivest/"
+
+      - name: Run deploy script
+        env:
+          APP_URL: ${{ vars.APP_URL }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          ssh -i ~/.ssh/vps_key -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=~/.ssh/known_hosts \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+            "APP_URL='${APP_URL}' DB_PASSWORD='${DB_PASSWORD}' bash /var/www/nivest/deploy/deploy.sh"
