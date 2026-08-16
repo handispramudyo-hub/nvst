@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { ImageUp, Trash2 } from 'lucide-react';
 import { api, extractErrorMessage } from '../lib/api';
 import { PageHeader, Card, Button, Field, Input, Textarea, Spinner, Alert } from '../components/ui';
 
@@ -68,7 +69,7 @@ function GroupForm({ groupKey, label, description, values, original }) {
     onError: (e) => toast.error(extractErrorMessage(e)),
   });
 
-  const keys = Object.keys(values ?? {});
+  const keys = Object.keys(values ?? {}).filter((k) => k !== 'qris_image');
   if (keys.length === 0) return null;
 
   return (
@@ -97,11 +98,98 @@ function GroupForm({ groupKey, label, description, values, original }) {
   );
 }
 
+function QrisImageCard({ qrisImage }) {
+  const queryClient = useQueryClient();
+  const [file, setFile] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const upload = useMutation({
+    mutationFn: async (f) => {
+      const fd = new FormData();
+      fd.append('qris_image', f);
+      return (await api.post('/admin/settings/payment/qris-image', fd)).data;
+    },
+    onSuccess: () => {
+      toast.success('Gambar QRIS berhasil diunggah.');
+      setFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      queryClient.invalidateQueries({ queryKey: ['admin', 'settings'] });
+    },
+    onError: (e) => toast.error(extractErrorMessage(e)),
+  });
+
+  const remove = useMutation({
+    mutationFn: async () => (await api.delete('/admin/settings/payment/qris-image')).data,
+    onSuccess: () => {
+      toast.success('Gambar QRIS dihapus.');
+      queryClient.invalidateQueries({ queryKey: ['admin', 'settings'] });
+    },
+    onError: (e) => toast.error(extractErrorMessage(e)),
+  });
+
+  const previewUrl = qrisImage ? `/storage/${qrisImage}` : null;
+
+  return (
+    <Card className="p-6">
+      <div className="mb-5">
+        <h3 className="text-base font-semibold text-slate-800">Gambar QRIS</h3>
+        <p className="mt-0.5 text-sm text-slate-500">Gambar QRIS yang ditampilkan kepada pengguna saat deposit</p>
+      </div>
+
+      {previewUrl ? (
+        <div className="mb-4 flex items-center justify-center rounded-xl border border-slate-200 bg-white p-4">
+          <img src={previewUrl} alt="QRIS" className="h-48 w-48 rounded-lg object-contain" />
+        </div>
+      ) : (
+        <div className="mb-4 flex h-48 items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 text-slate-400">
+          <span className="text-sm font-medium">Belum ada gambar QRIS</span>
+        </div>
+      )}
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+        className="hidden"
+      />
+
+      {file && <p className="mb-3 truncate text-sm text-slate-500">{file.name}</p>}
+
+      <div className="flex flex-wrap gap-2">
+        <Button
+          variant="secondary"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={upload.isPending}
+          className="flex-1"
+        >
+          <ImageUp size={16} />
+          {previewUrl ? 'Ganti Gambar' : 'Unggah Gambar'}
+        </Button>
+        {file && (
+          <Button onClick={() => upload.mutate(file)} loading={upload.isPending} className="flex-1">
+            Simpan
+          </Button>
+        )}
+        {previewUrl && (
+          <Button variant="danger" onClick={() => remove.mutate()} loading={remove.isPending}>
+            <Trash2 size={16} />
+            Hapus
+          </Button>
+        )}
+      </div>
+      <p className="mt-3 text-xs text-slate-400">Format JPG, PNG, atau WebP. Maksimal 5 MB.</p>
+    </Card>
+  );
+}
+
 export default function Settings() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['admin', 'settings'],
     queryFn: async () => (await api.get('/admin/settings')).data.data,
   });
+
+  const qrisImage = data?.payment?.qris_image ?? null;
 
   return (
     <div>
@@ -122,6 +210,7 @@ export default function Settings() {
                 original={data[g.key]}
               />
             ))}
+            <QrisImageCard qrisImage={qrisImage} />
           </div>
         )
       )}

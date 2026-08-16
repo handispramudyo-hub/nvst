@@ -136,5 +136,7 @@ Route::prefix('v1')->group(function () {
 
         Route::get('settings', [AdminSettingController::class, 'index'])->name('admin.settings.index')->middleware('permission:settings.manage');
         Route::put('settings', [AdminSettingController::class, 'update'])->name('admin.settings.update')->middleware('permission:settings.manage');
+        Route::post('settings/payment/qris-image', [AdminSettingController::class, 'uploadQrisImage'])->name('admin.settings.payment.qris-image.upload')->middleware('permission:settings.manage');
+        Route::delete('settings/payment/qris-image', [AdminSettingController::class, 'removeQrisImage'])->name('admin.settings.payment.qris-image.remove')->middleware('permission:settings.manage');
     });
 });

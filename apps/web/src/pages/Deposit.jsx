@@ -154,9 +154,17 @@ export default function Deposit() {
             </div>
 
             <div className="mt-4 rounded-2xl border border-outline-variant/10 bg-surface-container-low p-5">
-              <div className="mx-auto flex h-44 w-44 items-center justify-center rounded-xl border-2 border-dashed border-outline bg-white text-outline">
-                <QrCode size={88} />
-              </div>
+              {instructions?.qris_image ? (
+                <img
+                  src={instructions.qris_image}
+                  alt="QRIS"
+                  className="mx-auto h-44 w-44 rounded-xl bg-white object-contain p-2"
+                />
+              ) : (
+                <div className="mx-auto flex h-44 w-44 items-center justify-center rounded-xl border-2 border-dashed border-outline bg-white text-outline">
+                  <QrCode size={88} />
+                </div>
+              )}
               <p className="mt-3 text-center text-xs text-on-surface-variant">
                 Pindai QRIS di aplikasi e-wallet atau mobile banking anda
               </p>

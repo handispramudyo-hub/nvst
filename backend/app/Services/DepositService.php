@@ -24,10 +24,13 @@ class DepositService
 
     public function getPaymentInstructions(): array
     {
+        $qrisImage = Setting::get('payment', 'qris_image');
+
         return [
             'payment_method' => 'qris',
             'merchant_name' => Setting::get('payment', 'merchant_name', 'NiVEST'),
             'qris_payload' => Setting::get('payment', 'qris_payload'),
+            'qris_image' => $qrisImage ? url('storage/'.$qrisImage) : null,
             'min_deposit' => (float) Setting::get('payment', 'min_deposit', 10000),
             'max_deposit' => (float) Setting::get('payment', 'max_deposit', 1000000000),
         ];
