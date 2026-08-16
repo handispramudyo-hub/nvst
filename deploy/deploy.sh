@@ -15,8 +15,12 @@ echo "==> [1/9] directories + permissions"
 mkdir -p "$WEB_DIR" /var/www/.composer /var/www/.npm /var/www/.cache
 chown -R "$APP_USER:$APP_USER" /var/www
 
-echo "==> [2/9] backend .env (create once)"
-if [ ! -f "$BACKEND_DIR/.env" ]; then
+echo "==> [2/9] composer install"
+sudo -u "$APP_USER" bash -c "cd '$BACKEND_DIR' && composer install --no-dev --optimize-autoloader --no-interaction --no-progress"
+
+echo "==> [3/9] backend .env (create once)"
+if [ ! -f "$BACKEND_DIR/.env" ] || ! grep -q "APP_ENV=production" "$BACKEND_DIR/.env"; then
+  rm -f "$BACKEND_DIR/.env"
   cat > "$BACKEND_DIR/.env" <<EOF
 APP_NAME=NiVEST
 APP_ENV=production
@@ -65,9 +69,6 @@ else
   echo "   .env already exists, skipped"
 fi
 
-echo "==> [3/9] composer install"
-sudo -u "$APP_USER" bash -c "cd '$BACKEND_DIR' && composer install --no-dev --optimize-autoloader --no-interaction --no-progress"
-
 echo "==> [4/9] migrate"
 sudo -u "$APP_USER" bash -c "cd '$BACKEND_DIR' && php artisan migrate --force"
 
@@ -77,7 +78,7 @@ sudo -u "$APP_USER" bash -c "cd '$BACKEND_DIR' && php artisan db:seed --class=Ad
 sudo -u "$APP_USER" bash -c "cd '$BACKEND_DIR' && php artisan db:seed --class=SettingSeeder --force"
 
 echo "==> [6/9] storage link"
-sudo -u "$APP_USER" bash -c "cd '$BACKEND_DIR' && php artisan storage:link" || true
+sudo -u "$APP_USER" bash -c "cd '$BACKEND_DIR' && mkdir -p storage/app/public && php artisan storage:link" || true
 
 echo "==> [7/9] build web"
 sudo -u "$APP_USER" bash -c "cd '$FRONTEND_DIR' && npm ci --no-audit --no-fund || npm install --no-audit --no-fund"
