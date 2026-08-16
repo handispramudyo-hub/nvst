@@ -3,8 +3,10 @@ set -euo pipefail
 
 APP_DIR="/var/www/nivest"
 WEB_DIR="/var/www/nivest-web"
+ADMIN_DIR="/var/www/nivest-admin"
 BACKEND_DIR="$APP_DIR/backend"
 FRONTEND_DIR="$APP_DIR/apps/web"
+ADMIN_FRONTEND="$APP_DIR/apps/admin"
 APP_USER="www-data"
 export HOME="/var/www"
 
@@ -12,7 +14,7 @@ APP_URL="${APP_URL:-https://nivest.site}"
 DB_PASSWORD="${DB_PASSWORD:-}"
 
 echo "==> [1/9] directories + permissions"
-mkdir -p "$WEB_DIR" /var/www/.composer /var/www/.npm /var/www/.cache
+mkdir -p "$WEB_DIR" "$ADMIN_DIR" /var/www/.composer /var/www/.npm /var/www/.cache
 chown -R "$APP_USER:$APP_USER" /var/www
 
 echo "==> [2/9] composer install"
@@ -85,6 +87,11 @@ echo "==> [7/9] build web"
 sudo -u "$APP_USER" bash -c "cd '$FRONTEND_DIR' && npm ci --no-audit --no-fund || npm install --no-audit --no-fund"
 sudo -u "$APP_USER" bash -c "cd '$FRONTEND_DIR' && npm run build"
 rsync -a --delete "$FRONTEND_DIR/dist/" "$WEB_DIR/"
+
+echo "==> [7b/9] build admin"
+sudo -u "$APP_USER" bash -c "cd '$ADMIN_FRONTEND' && npm ci --no-audit --no-fund || npm install --no-audit --no-fund"
+sudo -u "$APP_USER" bash -c "cd '$ADMIN_FRONTEND' && npm run build"
+rsync -a --delete "$ADMIN_FRONTEND/dist/" "$ADMIN_DIR/"
 
 echo "==> [8/9] cache"
 sudo -u "$APP_USER" bash -c "cd '$BACKEND_DIR' && php artisan config:cache"
