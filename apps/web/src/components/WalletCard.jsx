@@ -1,50 +1,65 @@
-import { Leaf } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Leaf, TrendingUp } from 'lucide-react';
 import { rupiah } from '../lib/format';
 
 function Stat({ label, value, accent = false }) {
   return (
-    <div className="flex flex-1 flex-col items-center gap-0.5 px-1">
-      <span className={`text-sm font-bold tabular-nums ${accent ? 'text-emerald-200' : 'text-white'}`}>{value}</span>
-      <span className="text-[11px] text-center text-white/70">{label}</span>
+    <div className="flex flex-1 flex-col gap-0.5 px-1">
+      <span className={`font-financial-data text-financial-data tabular-nums ${accent ? 'text-secondary-fixed' : 'text-on-primary'}`}>
+        {value}
+      </span>
+      <span className="text-[11px] text-center text-primary-fixed-dim">{label}</span>
     </div>
   );
 }
 
 export default function WalletCard({ wallet, todayProfit = 0 }) {
-  const positive = Number(todayProfit) > 0;
   return (
-    <div className="overflow-hidden rounded-2xl border border-primary-900/10 bg-white shadow-card">
-      <div className="relative overflow-hidden bg-gradient-to-br from-blue-500 via-primary-600 to-primary-800 px-6 pb-6 pt-6">
-        <div className="pointer-events-none absolute -right-12 -top-16 h-48 w-48 rounded-full bg-sky-400/50 blur-2xl" />
-        <div className="pointer-events-none absolute -bottom-20 -left-8 h-44 w-44 rounded-full bg-sky-400/20 blur-2xl" />
+    <div className="relative overflow-hidden rounded-2xl shadow-float">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-container to-[#004d34] opacity-90" />
+      <div
+        className="absolute inset-0 opacity-20 mix-blend-overlay"
+        style={{
+          backgroundImage:
+            "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')",
+        }}
+      />
 
-        <div className="relative flex items-start justify-between">
+      <div className="relative z-10 flex flex-col gap-5 p-6 md:p-8">
+        <div className="flex items-start justify-between">
           <div>
-            <p className="text-[13px] font-semibold text-white/80">Total Saldo</p>
-            <p className="mt-1 text-4xl font-extrabold tracking-tight text-white tabular-nums">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-primary-fixed-dim">
+              Total Saldo
+            </p>
+            <p className="font-display text-4xl font-bold tracking-tight text-on-primary tabular-nums md:text-5xl">
               {rupiah(wallet.balance)}
             </p>
           </div>
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-white backdrop-blur">
-            <Leaf size={18} />
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-secondary-container backdrop-blur-md">
+            <Leaf size={20} />
           </span>
         </div>
 
-        <div className="relative mt-4 flex items-center justify-between">
-          <span className="text-xs font-medium text-white/80">Profit hari ini</span>
-          <span
-            className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold ${
-              positive ? 'bg-emerald-100 text-emerald-700' : 'bg-white/20 text-white'
-            }`}
-          >
-            +{rupiah(todayProfit)}
-          </span>
-        </div>
-
-        <div className="relative mt-6 flex divide-x divide-white/15">
+        <div className="flex divide-x divide-white/15 border-t border-white/10 pt-4">
           <Stat label="Total Deposit" value={rupiah(wallet.total_deposited)} />
           <Stat label="Total Investasi" value={rupiah(wallet.total_invested)} accent />
           <Stat label="Total Profit" value={rupiah(wallet.total_profit)} accent />
+        </div>
+
+        <div className="flex items-center justify-between border-t border-white/10 pt-4">
+          <div>
+            <p className="mb-1 text-xs font-semibold text-primary-fixed-dim">Keuntungan Hari Ini</p>
+            <p className="flex items-center gap-1.5 font-financial-data text-financial-data text-secondary-fixed tabular-nums">
+              <TrendingUp size={16} />
+              +{rupiah(todayProfit)}
+            </p>
+          </div>
+          <Link
+            to="/deposit"
+            className="rounded-lg bg-secondary px-4 py-2 text-xs font-semibold text-on-secondary shadow-sm transition-colors hover:bg-[#005a3d] active:scale-95"
+          >
+            Top Up
+          </Link>
         </div>
       </div>
     </div>

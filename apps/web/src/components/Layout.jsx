@@ -3,33 +3,46 @@ import { useQuery } from '@tanstack/react-query';
 import {
   ArrowLeftRight,
   Bell,
-  FolderOpen,
-  HandCoins,
+  Home,
   Landmark,
   LayoutDashboard,
   Leaf,
   LogOut,
-  UserRound,
+  Menu,
+  PieChart,
+  ReceiptText,
+  Rocket,
+  Settings,
+  User,
   Wallet,
 } from 'lucide-react';
 import { useAuthStore } from '../store/auth';
 import { api } from '../lib/api';
-import { rupiah } from '../lib/format';
 
-const NAV = [
-  { to: '/', label: 'Beranda', icon: LayoutDashboard, end: true },
-  { to: '/projects', label: 'Proyek', icon: FolderOpen },
-  { to: '/portfolio', label: 'Portofolio', icon: Wallet },
-  { to: '/deposit', label: 'Deposit', icon: Landmark },
-  { to: '/withdraw', label: 'Tarik Dana', icon: HandCoins },
-  { to: '/transactions', label: 'Transaksi', icon: ArrowLeftRight },
-  { to: '/profile', label: 'Profil', icon: UserRound },
+const DESKTOP_NAV = [
+  { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
+  { to: '/projects', label: 'Investments', icon: Rocket },
+  { to: '/portfolio', label: 'Holdings', icon: Wallet },
+  { to: '/transactions', label: 'Logs', icon: ArrowLeftRight },
 ];
+
+const MOBILE_NAV = [
+  { to: '/', label: 'Home', icon: Home, end: true },
+  { to: '/projects', label: 'Projects', icon: Landmark },
+  { to: '/portfolio', label: 'Portfolio', icon: PieChart },
+  { to: '/transactions', label: 'History', icon: ReceiptText },
+  { to: '/profile', label: 'Profile', icon: User },
+];
+
+function Initials({ name }) {
+  const parts = (name ?? 'U').trim().split(/\s+/);
+  const initial = (parts[0]?.[0] ?? 'U') + (parts[1]?.[0] ?? '');
+  return initial.toUpperCase();
+}
 
 export default function Layout() {
   const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
-  const wallet = useAuthStore((s) => s.wallet);
   const logout = useAuthStore((s) => s.logout);
   const navigate = useNavigate();
 
@@ -42,89 +55,116 @@ export default function Layout() {
 
   if (!token) return <Navigate to="/login" replace />;
 
-  const greeting = (() => {
-    const h = new Date().getHours();
-    if (h < 11) return 'Selamat pagi';
-    if (h < 15) return 'Selamat siang';
-    if (h < 19) return 'Selamat sore';
-    return 'Selamat malam';
-  })();
-
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
-  return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-600 text-white">
-              <Leaf size={20} />
-            </div>
-            <div className="leading-tight">
-              <p className="text-sm font-extrabold text-slate-900">NiVEST</p>
-              <p className="text-xs text-slate-400">Investasi Digital</p>
-            </div>
-          </Link>
+  const navItemClass = ({ isActive }) =>
+    `flex items-center gap-3 rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors ${
+      isActive
+        ? 'bg-primary-container font-bold text-on-primary-container'
+        : 'text-on-surface-variant hover:bg-surface-container-high hover:text-primary'
+    }`;
 
-          <div className="flex items-center gap-2">
-            <Link
-              to="/deposit"
-              className="hidden items-center gap-1.5 rounded-full bg-primary-50 px-3.5 py-1.5 shadow-pill sm:flex"
-            >
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-600 text-white">
-                <Wallet size={13} />
-              </span>
-              <span className="text-xs font-semibold text-primary-700">Saldo</span>
-              <span className="text-sm font-extrabold text-slate-900 tabular-nums">{rupiah(wallet?.balance ?? 0)}</span>
-            </Link>
-            <Link
-              to="/notifications"
-              className="relative flex h-9 w-9 items-center justify-center rounded-xl text-slate-500 hover:bg-slate-100"
-            >
-              <Bell size={20} />
-              {unread > 0 && (
-                <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
-              )}
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="flex h-9 w-9 items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 hover:text-red-600"
-              title="Keluar"
-            >
-              <LogOut size={20} />
-            </button>
+  const bottomItemClass = ({ isActive }) =>
+    `flex flex-col items-center justify-center gap-0.5 rounded-full px-4 py-1 transition-all ${
+      isActive
+        ? 'bg-secondary-container text-on-secondary-container'
+        : 'text-on-surface-variant hover:bg-surface-container'
+    }`;
+
+  return (
+    <div className="min-h-screen bg-background pb-20 text-on-background md:pb-0">
+      {/* Desktop sidebar */}
+      <aside className="fixed left-0 top-0 z-40 hidden h-screen w-72 flex-col border-r border-outline-variant/20 bg-surface p-6 md:flex">
+        <div className="mb-8 flex items-center gap-2 px-2">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-on-primary">
+            <Leaf size={20} />
+          </span>
+          <span className="font-display text-2xl font-bold tracking-tight text-primary">NiVEST</span>
+        </div>
+
+        <div className="mb-6 flex items-center gap-3 rounded-lg bg-surface-container-low p-3">
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary-container font-bold text-primary-fixed">
+            <Initials name={user?.name} />
+          </span>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-primary">{user?.name ?? 'Investor'}</p>
+            <p className="text-xs text-on-surface-variant">Premium Member</p>
           </div>
         </div>
 
-        <nav className="mx-auto max-w-3xl px-2 pb-2">
-          <div className="scrollbar-none flex gap-1 overflow-x-auto">
-            {NAV.map(({ to, label, icon: Icon, end }) => (
-              <NavLink
-                key={to}
-                to={to}
-                end={end}
-                className={({ isActive }) =>
-                  `flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm font-semibold transition-colors ${
-                    isActive ? 'bg-primary-50 text-primary-700' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'
-                  }`
-                }
-              >
-                <Icon size={16} />
-                {label}
-              </NavLink>
-            ))}
-          </div>
+        <nav className="flex flex-1 flex-col gap-1.5">
+          {DESKTOP_NAV.map(({ to, label, icon: Icon, end }) => (
+            <NavLink key={to} to={to} end={end} className={navItemClass}>
+              <Icon size={20} />
+              <span>{label}</span>
+            </NavLink>
+          ))}
         </nav>
-      </header>
 
-      <main className="mx-auto max-w-3xl px-4 py-6">
-        <p className="mb-1 text-[13px] text-slate-500">{greeting},</p>
-        <p className="mb-5 truncate text-xl font-extrabold text-slate-900">{user?.name ?? 'Pengguna'}</p>
-        <Outlet />
-      </main>
+        <div className="mt-4 border-t border-outline-variant/20 pt-4">
+          <NavLink to="/profile" className={navItemClass}>
+            <Settings size={20} />
+            <span>Account Settings</span>
+          </NavLink>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex w-full items-center gap-3 rounded-lg px-3.5 py-2.5 text-sm font-medium text-on-surface-variant transition-colors hover:bg-error-container hover:text-on-error-container"
+          >
+            <LogOut size={20} />
+            <span>Keluar</span>
+          </button>
+        </div>
+      </aside>
+
+      {/* Main column */}
+      <div className="flex min-h-screen w-full flex-1 flex-col md:ml-72">
+        {/* Top app bar */}
+        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-outline-variant/30 bg-surface/80 px-4 py-3.5 shadow-sm backdrop-blur-xl md:px-10">
+          <div className="flex items-center gap-2 md:hidden">
+            <button
+              type="button"
+              className="rounded-full p-2 text-primary transition-colors hover:bg-surface-container-high"
+              aria-label="Menu"
+            >
+              <Menu size={22} />
+            </button>
+            <span className="font-bold tracking-tight text-primary">NiVEST</span>
+          </div>
+          <div className="hidden md:block">
+            <span className="text-sm text-on-surface-variant">Ikhtisar Akun</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Link
+              to="/notifications"
+              className="relative flex h-10 w-10 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container-high"
+              aria-label="Notifikasi"
+            >
+              <Bell size={22} />
+              {unread > 0 && (
+                <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-error ring-2 ring-surface" />
+              )}
+            </Link>
+          </div>
+        </header>
+
+        <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 md:px-10 md:py-8">
+          <Outlet />
+        </main>
+      </div>
+
+      {/* Mobile bottom nav */}
+      <nav className="fixed bottom-0 left-0 z-50 flex w-full items-center justify-around border-t border-outline-variant/30 bg-surface/80 px-2 py-1.5 shadow-lg backdrop-blur-xl md:hidden">
+        {MOBILE_NAV.map(({ to, label, icon: Icon, end }) => (
+          <NavLink key={to} to={to} end={end} className={bottomItemClass}>
+            <Icon size={22} />
+            <span className="text-[10px] font-medium">{label}</span>
+          </NavLink>
+        ))}
+      </nav>
     </div>
   );
 }

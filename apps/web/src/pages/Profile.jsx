@@ -2,10 +2,16 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { KeyRound, Lock, UserRound } from 'lucide-react';
+import { CheckCircle2, KeyRound, Lock, UserRound } from 'lucide-react';
 import { api, extractErrorMessage } from '../lib/api';
 import { useAuthStore } from '../store/auth';
 import { Alert, Button, Card, Field, Input, PageHeader, Spinner } from '../components/ui';
+
+function Initials({ name }) {
+  const parts = (name ?? 'U').trim().split(/\s+/);
+  const initial = (parts[0]?.[0] ?? 'U') + (parts[1]?.[0] ?? '');
+  return initial.toUpperCase();
+}
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -116,37 +122,57 @@ export default function Profile() {
     return <Alert tone="error">Gagal memuat profil: {extractErrorMessage(profileQuery.error)}</Alert>;
   }
 
+  const profileUser = profile?.user;
+
   return (
     <div className="space-y-5">
       <PageHeader title="Profil Saya" description="Kelola data pribadi, password, dan PIN transaksi" />
 
-      <Card className="p-5">
-        <div className="flex items-center gap-2">
-          <UserRound size={18} className="text-primary-600" />
-          <h3 className="text-base font-bold text-slate-900">Data Profil</h3>
+      <Card className="overflow-hidden">
+        <div className="h-20 bg-gradient-to-r from-primary-container to-secondary" />
+        <div className="-mt-9 px-6 pb-5">
+          <div className="flex flex-wrap items-center gap-4">
+            <span className="flex h-[72px] w-[72px] items-center justify-center rounded-full border-4 border-surface-container-lowest bg-primary-container font-display text-2xl font-bold text-primary-fixed">
+              <Initials name={profileUser?.name} />
+            </span>
+            <div className="min-w-0">
+              <p className="flex flex-wrap items-center gap-2 font-headline-md text-headline-md text-primary">
+                {profileUser?.name}
+                <span className="inline-flex items-center gap-1 rounded-full bg-secondary-container/40 px-2 py-0.5 text-xs font-semibold text-on-secondary-container">
+                  <CheckCircle2 size={12} />
+                  Terverifikasi
+                </span>
+              </p>
+              <p className="text-sm text-on-surface-variant">{profileUser?.phone}</p>
+            </div>
+          </div>
         </div>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <div>
-            <p className="text-xs text-slate-400">Nama</p>
-            <p className="text-sm font-semibold text-slate-800">{profile?.user?.name}</p>
+
+        <div className="grid grid-cols-2 gap-px border-t border-outline-variant/20 bg-outline-variant/10 sm:grid-cols-4">
+          <div className="bg-surface-container-lowest px-6 py-4">
+            <p className="text-xs text-on-surface-variant">Email</p>
+            <p className="mt-0.5 truncate text-sm font-semibold text-primary">{profileUser?.email ?? '-'}</p>
           </div>
-          <div>
-            <p className="text-xs text-slate-400">Nomor HP</p>
-            <p className="text-sm font-semibold text-slate-800">{profile?.user?.phone}</p>
+          <div className="bg-surface-container-lowest px-6 py-4">
+            <p className="text-xs text-on-surface-variant">Kode Referral</p>
+            <p className="mt-0.5 truncate text-sm font-semibold text-primary">{profileUser?.referral_code ?? '-'}</p>
           </div>
-          <div>
-            <p className="text-xs text-slate-400">Email</p>
-            <p className="text-sm font-semibold text-slate-800">{profile?.user?.email ?? '-'}</p>
+          <div className="bg-surface-container-lowest px-6 py-4">
+            <p className="text-xs text-on-surface-variant">Total Deposit</p>
+            <p className="mt-0.5 truncate text-sm font-semibold text-secondary">{profile?.wallet?.total_deposited ?? 0}</p>
           </div>
-          <div>
-            <p className="text-xs text-slate-400">Kode Referral</p>
-            <p className="text-sm font-semibold text-slate-800">{profile?.user?.referral_code ?? '-'}</p>
+          <div className="bg-surface-container-lowest px-6 py-4">
+            <p className="text-xs text-on-surface-variant">Total Investasi</p>
+            <p className="mt-0.5 truncate text-sm font-semibold text-secondary">{profile?.wallet?.total_invested ?? 0}</p>
           </div>
         </div>
       </Card>
 
       <Card className="p-5">
-        <h3 className="text-base font-bold text-slate-900">Ubah Data Profil</h3>
+        <div className="flex items-center gap-2">
+          <UserRound size={18} className="text-secondary" />
+          <h3 className="text-base font-semibold text-primary">Ubah Data Profil</h3>
+        </div>
         <form onSubmit={handleUpdateProfile} className="mt-4 space-y-4">
           <Field label="Nama Lengkap" required>
             <Input value={name} onChange={(e) => setName(e.target.value)} />
@@ -163,8 +189,8 @@ export default function Profile() {
       <div className="grid gap-5 lg:grid-cols-2">
         <Card className="p-5">
           <div className="flex items-center gap-2">
-            <Lock size={18} className="text-primary-600" />
-            <h3 className="text-base font-bold text-slate-900">Ubah Password</h3>
+            <Lock size={18} className="text-secondary" />
+            <h3 className="text-base font-semibold text-primary">Ubah Password</h3>
           </div>
           <form onSubmit={handleChangePassword} className="mt-4 space-y-4">
             <Field label="Password Saat Ini" required>
@@ -193,8 +219,8 @@ export default function Profile() {
 
         <Card className="p-5">
           <div className="flex items-center gap-2">
-            <KeyRound size={18} className="text-primary-600" />
-            <h3 className="text-base font-bold text-slate-900">Ubah PIN Transaksi</h3>
+            <KeyRound size={18} className="text-secondary" />
+            <h3 className="text-base font-semibold text-primary">Ubah PIN Transaksi</h3>
           </div>
           <form onSubmit={handleChangePin} className="mt-4 space-y-4">
             <Field label="Password Saat Ini" required>

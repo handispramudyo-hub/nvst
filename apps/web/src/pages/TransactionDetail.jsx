@@ -3,7 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, CheckCircle2, ChevronRight, LifeBuoy, XCircle } from 'lucide-react';
 import { api, extractErrorMessage } from '../lib/api';
 import { rupiah, formatDateTime } from '../lib/format';
-import { Badge, Button, Card, EmptyState, Spinner } from '../components/ui';const TYPE_LABELS = {
+import { Badge, Button, Card, EmptyState, Spinner } from '../components/ui';
+
+const TYPE_LABELS = {
   deposit: 'Deposit',
   investment: 'Investasi',
   withdrawal: 'Penarikan',
@@ -33,9 +35,9 @@ function methodLabel(tx) {
 
 function DetailRow({ label, value, bold = false }) {
   return (
-    <div className="flex items-center justify-between gap-4 py-2">
-      <span className="text-[13px] text-slate-500">{label}</span>
-      <span className={`text-right text-[13px] ${bold ? 'font-bold text-slate-900' : 'font-medium text-slate-900'}`}>
+    <div className="flex items-center justify-between gap-4 py-2.5">
+      <span className="text-[13px] text-on-surface-variant">{label}</span>
+      <span className={`text-right text-[13px] ${bold ? 'font-bold text-primary' : 'font-medium text-on-surface'}`}>
         {value}
       </span>
     </div>
@@ -78,47 +80,53 @@ export default function TransactionDetail() {
     <div className="space-y-5">
       <Link
         to="/transactions"
-        className="inline-flex items-center gap-1 text-sm font-semibold text-slate-500 hover:text-primary-700"
+        className="inline-flex items-center gap-1 text-sm font-semibold text-on-surface-variant hover:text-primary"
       >
         <ArrowLeft size={16} />
         Kembali ke Riwayat
       </Link>
 
       <div className="flex flex-col items-center gap-3">
-        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
-          <CheckCircle2 size={28} className="text-emerald-600" />
+        <span className={`flex h-14 w-14 items-center justify-center rounded-full ${isCredit ? 'bg-secondary-container/40 text-on-secondary-container' : 'bg-error-container text-on-error-container'}`}>
+          <CheckCircle2 size={28} />
         </span>
         <Badge tone={badge.tone}>{badge.label}</Badge>
-        <p className={`text-[28px] font-bold tabular-nums ${isCredit ? 'text-emerald-600' : 'text-red-600'}`}>
+        <p className={`font-display text-4xl font-bold tabular-nums ${isCredit ? 'text-secondary' : 'text-error'}`}>
           {isCredit ? '+' : '-'}
           {rupiah(Math.abs(tx.amount))}
         </p>
       </div>
 
-      <Card className="divide-y divide-slate-100 p-5">
+      <Card className="divide-y divide-outline-variant/20 p-5">
         <DetailRow label="Jenis" value={TYPE_LABELS[tx.type] ?? tx.type} />
         <DetailRow label="Metode" value={methodLabel(tx)} />
         <DetailRow label="Tanggal" value={formatDateTime(tx.created_at)} />
         <DetailRow label="No. Referensi" value={tx.tx_id} bold />
-        <div className="flex items-center justify-between py-2">
-          <span className="text-[13px] text-slate-500">Status</span>
+        <div className="flex items-center justify-between py-2.5">
+          <span className="text-[13px] text-on-surface-variant">Status</span>
           <Badge tone={badge.tone}>{badge.label}</Badge>
         </div>
       </Card>
 
       <Card className="p-5">
-        <p className="mb-3 text-sm font-semibold text-slate-500">Bantuan</p>
+        <p className="mb-3 text-sm font-semibold text-on-surface-variant">Bantuan</p>
         <div className="space-y-2">
-          <button type="button" className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-slate-800 hover:bg-slate-50">
+          <button
+            type="button"
+            className="flex w-full items-center justify-between rounded-xl border border-outline-variant/20 bg-surface-container-low px-4 py-3.5 text-sm font-semibold text-primary hover:bg-surface-container"
+          >
             Laporkan Masalah
-            <ChevronRight size={18} className="text-slate-400" />
+            <ChevronRight size={18} className="text-outline" />
           </button>
-          <button type="button" className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-slate-800 hover:bg-slate-50">
+          <button
+            type="button"
+            className="flex w-full items-center justify-between rounded-xl border border-outline-variant/20 bg-surface-container-low px-4 py-3.5 text-sm font-semibold text-primary hover:bg-surface-container"
+          >
             <span className="inline-flex items-center gap-2">
-              <LifeBuoy size={16} className="text-slate-400" />
+              <LifeBuoy size={16} className="text-outline" />
               Hubungi CS
             </span>
-            <ChevronRight size={18} className="text-slate-400" />
+            <ChevronRight size={18} className="text-outline" />
           </button>
         </div>
       </Card>

@@ -83,8 +83,8 @@ export default function Accounts() {
       <div className="grid gap-5 lg:grid-cols-2">
         <Card className="p-5">
           <div className="flex items-center gap-2">
-            <Plus size={18} className="text-primary-600" />
-            <h3 className="text-base font-bold text-slate-900">Tambah Akun</h3>
+            <Plus size={18} className="text-secondary" />
+            <h3 className="text-base font-semibold text-primary">Tambah Akun</h3>
           </div>
           <form onSubmit={handleSubmit} className="mt-4 space-y-4">
             <Field label="Jenis Akun" required>
@@ -106,12 +106,12 @@ export default function Accounts() {
             <Field label="Nomor Akun" required>
               <Input inputMode="numeric" placeholder="Nomor rekening / e-wallet" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} />
             </Field>
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-600">
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-on-surface-variant">
               <input
                 type="checkbox"
                 checked={isDefault}
                 onChange={(e) => setIsDefault(e.target.checked)}
-                className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+                className="h-4 w-4 rounded accent-primary"
               />
               Jadikan akun utama
             </label>
@@ -127,7 +127,7 @@ export default function Accounts() {
         </Card>
 
         <Card className="p-5">
-          <h3 className="text-base font-bold text-slate-900">Akun Tersimpan ({accounts.length})</h3>
+          <h3 className="text-base font-semibold text-primary">Akun Tersimpan ({accounts.length})</h3>
           {profileQuery.isLoading ? (
             <Spinner size={28} />
           ) : accounts.length === 0 ? (
@@ -139,13 +139,13 @@ export default function Accounts() {
           ) : (
             <div className="mt-3 space-y-3">
               {accounts.map((a) => (
-                <div key={a.id} className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 p-4">
+                <div key={a.id} className="flex items-center justify-between gap-3 rounded-xl border border-outline-variant/20 p-4">
                   <div className="flex min-w-0 items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-600">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-fixed text-on-primary-fixed">
                       {a.account_type === 'bank' ? <Landmark size={18} /> : <Wallet size={18} />}
                     </div>
                     <div className="min-w-0">
-                      <p className="flex flex-wrap items-center gap-1.5 text-sm font-semibold text-slate-800">
+                      <p className="flex flex-wrap items-center gap-1.5 text-sm font-semibold text-primary">
                         {a.provider}
                         {a.is_default && (
                           <Badge tone="blue">
@@ -154,7 +154,7 @@ export default function Accounts() {
                           </Badge>
                         )}
                       </p>
-                      <p className="truncate text-xs text-slate-400">
+                      <p className="truncate text-xs text-on-surface-variant">
                         {a.account_name} · {a.account_number}
                       </p>
                     </div>
@@ -162,7 +162,7 @@ export default function Accounts() {
                   <button
                     type="button"
                     onClick={() => handleDelete(a)}
-                    className="rounded-lg p-2 text-slate-400 hover:bg-red-50 hover:text-red-600"
+                    className="rounded-lg p-2 text-outline transition-colors hover:bg-error-container hover:text-on-error-container"
                     title="Hapus akun"
                   >
                     <Trash2 size={18} />

@@ -10,6 +10,7 @@ import ProjectCard from '../components/ProjectCard';
 import Section from '../components/Section';
 
 export default function Home() {
+  const user = useAuthStore((s) => s.user);
   const setWallet = useAuthStore((s) => s.setWallet);
 
   const walletQuery = useQuery({
@@ -35,9 +36,19 @@ export default function Home() {
   const wallet = walletQuery.data?.wallet;
   const todayProfit = walletQuery.data?.today_profit ?? 0;
   const projects = projectsQuery.data ?? [];
+  const firstName = (user?.name ?? 'Investor').split(' ')[0];
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
+      <section>
+        <h1 className="font-headline-lg-mobile text-headline-lg-mobile text-primary md:font-headline-lg md:text-headline-lg">
+          Halo, {firstName}!
+        </h1>
+        <p className="mt-1 font-body-md text-body-md text-on-surface-variant">
+          Mari pantau perkembangan investasimu hari ini.
+        </p>
+      </section>
+
       {walletQuery.isLoading ? (
         <Spinner />
       ) : walletQuery.error ? (
@@ -62,7 +73,7 @@ export default function Home() {
             />
           </Card>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {projects.map((p) => (
               <ProjectCard key={p.id} project={p} />
             ))}

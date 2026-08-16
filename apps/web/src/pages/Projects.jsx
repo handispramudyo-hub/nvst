@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { FolderOpen } from 'lucide-react';
+import { FolderOpen, SlidersHorizontal } from 'lucide-react';
 import { api, extractErrorMessage } from '../lib/api';
 import { Alert, Button, EmptyState, PageHeader, Select, Spinner } from '../components/ui';
 import ProjectCard from '../components/ProjectCard';
@@ -44,11 +44,15 @@ export default function Projects() {
   return (
     <div className="space-y-4">
       <PageHeader
-        title="Proyek"
+        title="Proyek Investasi"
         description="Pilih proyek UMKM yang paling sesuai dengan tujuan investasi anda"
       />
 
       <div className="flex flex-wrap items-center gap-3">
+        <div className="flex items-center gap-2 text-on-surface-variant">
+          <SlidersHorizontal size={16} />
+          <span className="text-sm font-medium">Filter:</span>
+        </div>
         <div className="w-full sm:w-52">
           <Select value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="">Semua Status</option>
@@ -69,7 +73,7 @@ export default function Projects() {
             ))}
           </Select>
         </div>
-        <p className="text-sm text-slate-400">{filtered.length} proyek</p>
+        <p className="text-sm text-outline">{filtered.length} proyek</p>
       </div>
 
       {projectsQuery.isLoading ? (
@@ -88,7 +92,7 @@ export default function Projects() {
           }
         />
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {filtered.map((p) => (
             <ProjectCard key={p.id} project={p} />
           ))}

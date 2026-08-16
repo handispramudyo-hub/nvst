@@ -132,7 +132,7 @@ export default function Withdraw() {
       )}
 
       <Card className="p-5">
-        <h3 className="text-base font-bold text-slate-900">Ajukan Penarikan</h3>
+        <h3 className="text-base font-semibold text-primary">Ajukan Penarikan</h3>
 
         {created ? (
           <div className="mt-4">
@@ -170,7 +170,9 @@ export default function Withdraw() {
                     <label
                       key={a.id}
                       className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition-colors ${
-                        selected ? 'border-primary-500 bg-primary-50' : 'border-slate-200 bg-white hover:bg-slate-50'
+                        selected
+                          ? 'border-primary bg-surface-container-low'
+                          : 'border-outline-variant/20 bg-surface-container-lowest hover:bg-surface-container-low'
                       }`}
                     >
                       <input
@@ -179,17 +181,17 @@ export default function Withdraw() {
                         value={a.id}
                         checked={selected}
                         onChange={(e) => setAccountId(e.target.value)}
-                        className="h-4 w-4 border-slate-300 text-primary-600 focus:ring-primary-500"
+                        className="h-4 w-4 accent-primary"
                       />
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary-100 text-primary-600">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary-fixed text-on-primary-fixed">
                         {a.account_type === 'bank' ? <Landmark size={16} /> : <Wallet size={16} />}
                       </span>
                       <span className="min-w-0 flex-1">
-                        <span className="flex items-center gap-1.5 text-sm font-semibold text-slate-800">
+                        <span className="flex items-center gap-1.5 text-sm font-semibold text-primary">
                           {a.provider}
                           {a.is_default && <Badge tone="blue">Utama</Badge>}
                         </span>
-                        <span className="block truncate text-xs text-slate-400">
+                        <span className="block truncate text-xs text-on-surface-variant">
                           {a.account_name} · {a.account_number}
                         </span>
                       </span>
@@ -223,22 +225,22 @@ export default function Withdraw() {
             </Field>
 
             {amountNum > 0 && rules && (
-              <div className="space-y-1.5 rounded-xl bg-slate-50 p-4 text-sm">
+              <div className="space-y-1.5 rounded-xl border border-outline-variant/10 bg-surface-container-low p-4 text-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Jumlah Tarik</span>
-                  <b className="text-slate-800">{rupiah(amountNum)}</b>
+                  <span className="text-on-surface-variant">Jumlah Tarik</span>
+                  <b className="text-primary">{rupiah(amountNum)}</b>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">
+                  <span className="text-on-surface-variant">
                     Biaya Admin
                     {rules.fee_percent > 0 ? ` (${rules.fee_percent}%)` : ''}
                     {rules.fee_flat > 0 ? ` + ${rupiah(rules.fee_flat)}` : ''}
                   </span>
-                  <b className="text-slate-800">{rupiah(fee)}</b>
+                  <b className="text-primary">{rupiah(fee)}</b>
                 </div>
-                <div className="flex items-center justify-between border-t border-slate-200 pt-1.5">
-                  <span className="text-slate-500">Diterima</span>
-                  <b className="text-emerald-600">{rupiah(finalAmount)}</b>
+                <div className="flex items-center justify-between border-t border-outline-variant/20 pt-1.5">
+                  <span className="text-on-surface-variant">Diterima</span>
+                  <b className="text-secondary">{rupiah(finalAmount)}</b>
                 </div>
               </div>
             )}
@@ -285,17 +287,19 @@ export default function Withdraw() {
             />
           </Card>
         ) : (
-          <Card className="divide-y divide-slate-100 px-4">
+          <Card className="divide-y divide-outline-variant/20 px-4">
             {withdrawals.map((w) => (
               <div key={w.id} className="flex items-center justify-between gap-3 py-3">
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-slate-800">{w.withdrawal_no}</p>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-sm font-semibold text-primary">{w.withdrawal_no}</p>
+                  <p className="text-xs text-on-surface-variant">
                     {w.provider} {w.account_number} · {formatDateTime(w.created_at)}
                   </p>
                 </div>
                 <div className="shrink-0 text-right">
-                  <p className="text-sm font-bold text-slate-900">{rupiah(w.amount)}</p>
+                  <p className="font-financial-data text-financial-data font-semibold text-primary tabular-nums">
+                    {rupiah(w.amount)}
+                  </p>
                   <StatusBadge status={w.status} />
                 </div>
               </div>

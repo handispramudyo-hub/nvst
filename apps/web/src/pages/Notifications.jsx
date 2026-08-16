@@ -89,24 +89,24 @@ export default function Notifications() {
               type="button"
               key={n.id}
               onClick={() => handleClick(n)}
-              className="flex w-full items-start gap-3 border-b border-slate-50 py-3 text-left last:border-0"
+              className="flex w-full items-start gap-3 border-b border-outline-variant/20 py-3 text-left last:border-0"
             >
               <span
                 className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${
-                  n.read_at ? 'bg-slate-100 text-slate-400' : 'bg-primary-100 text-primary-600'
+                  n.read_at ? 'bg-surface-container text-on-surface-variant' : 'bg-primary-fixed text-on-primary-fixed'
                 }`}
               >
                 <Bell size={16} />
               </span>
               <span className="min-w-0 flex-1">
                 <span className="flex items-center justify-between gap-2">
-                  <span className={`truncate text-sm font-semibold ${n.read_at ? 'text-slate-600' : 'text-slate-900'}`}>
+                  <span className={`truncate text-sm font-semibold ${n.read_at ? 'text-on-surface-variant' : 'text-primary'}`}>
                     {n.title}
                   </span>
-                  {!n.read_at && <span className="h-2 w-2 shrink-0 rounded-full bg-primary-500" />}
+                  {!n.read_at && <span className="h-2 w-2 shrink-0 rounded-full bg-secondary" />}
                 </span>
-                <span className="block text-[13px] leading-relaxed text-slate-500">{n.body}</span>
-                <span className="mt-0.5 block text-xs text-slate-400">{formatDateTime(n.created_at)}</span>
+                <span className="block text-[13px] leading-relaxed text-on-surface-variant">{n.body}</span>
+                <span className="mt-0.5 block text-xs text-outline">{formatDateTime(n.created_at)}</span>
               </span>
             </button>
           ))}

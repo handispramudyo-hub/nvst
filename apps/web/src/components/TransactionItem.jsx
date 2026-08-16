@@ -2,20 +2,20 @@ import { ArrowDownLeft, ArrowUpRight, Wallet, TrendingUp, HandCoins, Settings } 
 import { formatDateTime, rupiah } from '../lib/format';
 
 const TYPE_META = {
-  deposit: { label: 'Deposit', icon: ArrowDownLeft, cls: 'bg-emerald-100 text-emerald-700' },
-  investment: { label: 'Investasi', icon: Wallet, cls: 'bg-primary-100 text-primary-700' },
-  withdrawal: { label: 'Penarikan', icon: ArrowUpRight, cls: 'bg-amber-100 text-amber-700' },
-  profit: { label: 'Profit', icon: TrendingUp, cls: 'bg-emerald-100 text-emerald-700' },
-  commission: { label: 'Komisi', icon: HandCoins, cls: 'bg-sky-100 text-sky-700' },
-  adjustment: { label: 'Penyesuaian', icon: Settings, cls: 'bg-slate-100 text-slate-600' },
+  deposit: { label: 'Deposit', icon: ArrowDownLeft, cls: 'bg-secondary-container/40 text-on-secondary-container' },
+  investment: { label: 'Investasi', icon: Wallet, cls: 'bg-primary-container/10 text-primary' },
+  withdrawal: { label: 'Penarikan', icon: ArrowUpRight, cls: 'bg-tertiary-fixed text-tertiary-container' },
+  profit: { label: 'Profit', icon: TrendingUp, cls: 'bg-secondary-container/40 text-on-secondary-container' },
+  commission: { label: 'Komisi', icon: HandCoins, cls: 'bg-surface-variant text-surface-tint' },
+  adjustment: { label: 'Penyesuaian', icon: Settings, cls: 'bg-surface-container text-on-surface-variant' },
 };
 
 const STATUS_BADGES = {
-  rejected: { label: 'Ditolak', cls: 'bg-red-100 text-red-700' },
-  pending: { label: 'Pending', cls: 'bg-amber-100 text-amber-700' },
-  processing: { label: 'Diproses', cls: 'bg-amber-100 text-amber-700' },
-  completed: { label: 'Berhasil', cls: 'bg-emerald-100 text-emerald-700' },
-  approved: { label: 'Berhasil', cls: 'bg-emerald-100 text-emerald-700' },
+  rejected: { label: 'Ditolak', cls: 'bg-error-container text-on-error-container' },
+  pending: { label: 'Pending', cls: 'bg-tertiary-fixed text-tertiary-container' },
+  processing: { label: 'Diproses', cls: 'bg-tertiary-fixed text-tertiary-container' },
+  completed: { label: 'Berhasil', cls: 'bg-secondary-container/40 text-on-secondary-container' },
+  approved: { label: 'Berhasil', cls: 'bg-secondary-container/40 text-on-secondary-container' },
 };
 
 function statusBadge(tx) {
@@ -32,20 +32,20 @@ export default function TransactionItem({ tx }) {
   const sign = isCredit ? '+' : '-';
   const badge = statusBadge(tx);
   return (
-    <div className="flex items-center gap-3 border-b border-slate-100 py-2.5 last:border-0">
-      <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${meta.cls}`}>
+    <div className="flex items-center gap-3 border-b border-outline-variant/20 py-3 last:border-0">
+      <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${meta.cls}`}>
         <Icon size={18} />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-slate-900">{tx.description ?? meta.label}</p>
-        <p className="text-xs text-slate-500">{formatDateTime(tx.created_at)}</p>
+        <p className="truncate text-sm font-semibold text-on-surface">{tx.description ?? meta.label}</p>
+        <p className="text-xs text-on-surface-variant">{formatDateTime(tx.created_at)}</p>
       </div>
       <div className="flex shrink-0 flex-col items-end gap-1">
-        <span className={`text-sm font-bold tabular-nums ${isCredit ? 'text-emerald-600' : 'text-red-600'}`}>
+        <span className={`font-financial-data text-financial-data tabular-nums ${isCredit ? 'text-secondary' : 'text-error'}`}>
           {sign}
           {rupiah(Math.abs(tx.amount))}
         </span>
-        <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold ${badge.cls}`}>
+        <span className={`inline-flex items-center rounded px-2 py-0.5 text-[11px] font-semibold ${badge.cls}`}>
           {badge.label}
         </span>
       </div>

@@ -40,7 +40,9 @@ export default function Transactions() {
             type="button"
             onClick={() => setType(f.key)}
             className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors ${
-              type === f.key ? 'bg-primary-600 text-white' : 'bg-white text-slate-500 hover:bg-slate-100'
+              type === f.key
+                ? 'bg-primary text-on-primary'
+                : 'bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container'
             }`}
           >
             {f.label}
@@ -61,7 +63,7 @@ export default function Transactions() {
       ) : (
         <Card className="px-4">
           {filtered.map((tx) => (
-            <Link key={tx.id} to={`/transactions/${tx.id}`} className="block transition-colors hover:bg-slate-50/60">
+            <Link key={tx.id} to={`/transactions/${tx.id}`} className="block transition-colors hover:bg-surface-container-low">
               <TransactionItem tx={tx} />
             </Link>
           ))}

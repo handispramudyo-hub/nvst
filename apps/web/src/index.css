@@ -3,75 +3,105 @@
 @theme {
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
 
-  /* Primary: Biru brand mobile (#2563EB) */
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
+  /* Material 3 palette (desain Google Stitch) */
+  --color-background: #f7f9fb;
+  --color-on-background: #191c1e;
+  --color-surface: #f7f9fb;
+  --color-surface-bright: #f7f9fb;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f2f4f6;
+  --color-surface-container: #eceef0;
+  --color-surface-container-high: #e6e8ea;
+  --color-surface-container-highest: #e0e3e5;
+  --color-surface-dim: #d8dadc;
+  --color-surface-variant: #e0e3e5;
+  --color-on-surface: #191c1e;
+  --color-on-surface-variant: #44474d;
+  --color-outline: #75777e;
+  --color-outline-variant: #c5c6cd;
 
-  /* Success / profit (#16A34A) */
-  --color-emerald-50: #ecfdf5;
-  --color-emerald-100: #dcfce7;
-  --color-emerald-200: #bbf7d0;
-  --color-emerald-300: #86efac;
-  --color-emerald-400: #4ade80;
-  --color-emerald-500: #22c55e;
-  --color-emerald-600: #16a34a;
-  --color-emerald-700: #15803d;
-  --color-emerald-800: #166534;
-  --color-emerald-900: #14532d;
+  --color-primary: #000000;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #0d1c32;
+  --color-on-primary-container: #76849f;
+  --color-primary-fixed: #d6e3ff;
+  --color-primary-fixed-dim: #b9c7e4;
+  --color-on-primary-fixed: #0d1c32;
+  --color-on-primary-fixed-variant: #39475f;
 
-  /* Warning (#D97706) */
-  --color-amber-50: #fffbeb;
-  --color-amber-100: #fef3c7;
-  --color-amber-200: #fde68a;
-  --color-amber-300: #fcd34d;
-  --color-amber-400: #fbbf24;
-  --color-amber-500: #f59e0b;
-  --color-amber-600: #d97706;
-  --color-amber-700: #b45309;
-  --color-amber-800: #92400e;
-  --color-amber-900: #78350f;
+  --color-secondary: #006c49;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #6cf8bb;
+  --color-on-secondary-container: #00714d;
+  --color-secondary-fixed: #6ffbbe;
+  --color-secondary-fixed-dim: #4edea3;
+  --color-on-secondary-fixed: #002113;
+  --color-on-secondary-fixed-variant: #005236;
 
-  /* Danger (#DC2626) */
-  --color-red-50: #fef2f2;
-  --color-red-100: #fee2e2;
-  --color-red-200: #fecaca;
-  --color-red-500: #ef4444;
-  --color-red-600: #dc2626;
-  --color-red-700: #b91c1c;
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
 
-  /* Info (#0284C7) */
-  --color-sky-50: #f0f9ff;
-  --color-sky-100: #e0f2fe;
-  --color-sky-500: #0ea5e9;
-  --color-sky-600: #0284c7;
-  --color-sky-700: #0369a1;
+  --color-tertiary-fixed: #ffddb8;
+  --color-tertiary-fixed-dim: #ffb95f;
+  --color-tertiary-container: #2a1700;
+  --color-on-tertiary-container: #b87500;
+  --color-on-tertiary-fixed-variant: #653e00;
 
-  --radius-card: 16px;
-  --radius-btn: 12px;
-  --radius-input: 12px;
-  --radius-modal: 20px;
+  --color-inverse-surface: #2d3133;
+  --color-inverse-on-surface: #eff1f3;
+  --color-inverse-primary: #b9c7e4;
+  --color-surface-tint: #515f78;
+
+  /* Skala tipografi */
+  --text-display: 48px;
+  --text-display--line-height: 56px;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 700;
+
+  --text-headline-lg: 32px;
+  --text-headline-lg--line-height: 40px;
+  --text-headline-lg--letter-spacing: -0.01em;
+  --text-headline-lg--font-weight: 700;
+
+  --text-headline-lg-mobile: 24px;
+  --text-headline-lg-mobile--line-height: 32px;
+  --text-headline-lg-mobile--font-weight: 700;
+
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 32px;
+  --text-headline-md--font-weight: 600;
+
+  --text-financial-data: 16px;
+  --text-financial-data--line-height: 24px;
+  --text-financial-data--font-weight: 600;
+
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 28px;
+  --text-body-lg--font-weight: 400;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 24px;
+  --text-body-md--font-weight: 400;
+
+  --text-label-sm: 12px;
+  --text-label-sm--line-height: 16px;
+  --text-label-sm--letter-spacing: 0.05em;
+  --text-label-sm--font-weight: 500;
+
+  /* Radius */
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-card: 0.75rem;
+  --radius-btn: 0.5rem;
+  --radius-input: 0.5rem;
+  --radius-modal: 1rem;
 
   /* Elevation */
-  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.06);
-  --shadow-card-hover: 0 2px 4px rgba(15, 23, 42, 0.06), 0 16px 40px rgba(15, 23, 42, 0.12);
-  --shadow-btn: 0 4px 12px rgba(37, 99, 235, 0.28);
-  --shadow-pill: 0 2px 6px rgba(15, 23, 42, 0.08);
-}
-
-/* Soft ambient gradient behind the app shell */
-body {
-  background-image:
-    radial-gradient(720px 320px at 50% -10%, rgba(37, 99, 235, 0.07), transparent 70%),
-    radial-gradient(560px 280px at 110% 8%, rgba(2, 132, 199, 0.05), transparent 70%);
-  background-color: #f8fafc;
+  --shadow-float: 0 4px 6px -1px rgba(10, 25, 47, 0.05), 0 10px 15px -3px rgba(10, 25, 47, 0.1);
+  --shadow-card: 0 4px 6px -1px rgba(10, 25, 47, 0.05), 0 10px 15px -3px rgba(10, 25, 47, 0.1);
+  --shadow-card-hover: 0 8px 12px -2px rgba(10, 25, 47, 0.08), 0 20px 30px -6px rgba(10, 25, 47, 0.16);
 }
 
 html,
@@ -83,8 +113,11 @@ body,
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background-color: #f8fafc;
-  color: #0f172a;
+  background-color: #f7f9fb;
+  background-image:
+    radial-gradient(720px 320px at 50% -10%, rgba(13, 28, 50, 0.04), transparent 70%),
+    radial-gradient(560px 280px at 110% 8%, rgba(0, 108, 73, 0.03), transparent 70%);
+  color: #191c1e;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -93,15 +126,10 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Hide scrollbars on horizontal chip rows */
 .scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 .scrollbar-none::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scrollbar::-webkit-scrollbar {
   display: none;
 }
