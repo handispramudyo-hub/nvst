@@ -112,7 +112,7 @@ export default function Portfolio() {
       ) : summaryQuery.error ? (
         <Alert tone="error">Gagal memuat ringkasan: {extractErrorMessage(summaryQuery.error)}</Alert>
       ) : (
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3">
           <StatCard icon={PiggyBank} label="Total Investasi" value={rupiah(summary?.total_invested ?? 0)} />
           <StatCard icon={Briefcase} label="Nilai Aktif" value={rupiah(summary?.active_amount ?? 0)} tone="green" />
           <StatCard

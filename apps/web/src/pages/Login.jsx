@@ -63,7 +63,7 @@ export default function Login() {
           <h1 className="font-display text-4xl font-bold tracking-tight text-primary">NiVEST</h1>
         </div>
 
-        <div className="rounded-xl border border-outline-variant/30 bg-white/80 p-6 shadow-float backdrop-blur-md md:p-8">
+        <div className="rounded-xl border border-outline-variant/30 bg-white/80 p-6 shadow-float backdrop-blur-md">
           <div className="mb-6">
             <h2 className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Selamat Datang Kembali</h2>
             <p className="mt-1 text-sm text-on-surface-variant">Masuk untuk mengelola investasi Anda dengan aman.</p>

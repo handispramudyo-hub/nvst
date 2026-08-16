@@ -41,9 +41,7 @@ export default function Home() {
   return (
     <div className="space-y-6">
       <section>
-        <h1 className="font-headline-lg-mobile text-headline-lg-mobile text-primary md:font-headline-lg md:text-headline-lg">
-          Halo, {firstName}!
-        </h1>
+        <h1 className="font-headline-lg-mobile text-headline-lg-mobile text-primary">Halo, {firstName}!</h1>
         <p className="mt-1 font-body-md text-body-md text-on-surface-variant">
           Mari pantau perkembangan investasimu hari ini.
         </p>
@@ -73,7 +71,7 @@ export default function Home() {
             />
           </Card>
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="space-y-5">
             {projects.map((p) => (
               <ProjectCard key={p.id} project={p} />
             ))}

@@ -65,7 +65,7 @@ export default function Register() {
           <p className="mt-1 text-sm text-on-surface-variant">Mulai investasi di UMKM Indonesia</p>
         </div>
 
-        <Card className="p-6 md:p-8">
+        <Card className="p-6">
           {formError && <Alert className="mb-4">{formError}</Alert>}
           <form onSubmit={onSubmit} className="space-y-4">
             <Field label="Nama Lengkap" required error={errors.name?.message}>

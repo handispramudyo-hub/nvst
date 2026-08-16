@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { CheckCircle2, KeyRound, Lock, UserRound } from 'lucide-react';
+import { CheckCircle2, KeyRound, Lock, LogOut, UserRound } from 'lucide-react';
 import { api, extractErrorMessage } from '../lib/api';
+import { rupiah } from '../lib/format';
 import { useAuthStore } from '../store/auth';
 import { Alert, Button, Card, Field, Input, PageHeader, Spinner } from '../components/ui';
 
@@ -132,23 +133,23 @@ export default function Profile() {
         <div className="h-20 bg-gradient-to-r from-primary-container to-secondary" />
         <div className="-mt-9 px-6 pb-5">
           <div className="flex flex-wrap items-center gap-4">
-            <span className="flex h-[72px] w-[72px] items-center justify-center rounded-full border-4 border-surface-container-lowest bg-primary-container font-display text-2xl font-bold text-primary-fixed">
+            <span className="flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-full border-4 border-surface-container-lowest bg-primary-container font-display text-2xl font-bold text-primary-fixed">
               <Initials name={profileUser?.name} />
             </span>
-            <div className="min-w-0">
-              <p className="flex flex-wrap items-center gap-2 font-headline-md text-headline-md text-primary">
-                {profileUser?.name}
-                <span className="inline-flex items-center gap-1 rounded-full bg-secondary-container/40 px-2 py-0.5 text-xs font-semibold text-on-secondary-container">
+            <div className="min-w-0 flex-1">
+              <p className="flex flex-wrap items-center gap-2 font-headline-md text-headline-md leading-tight text-primary">
+                <span className="break-words">{profileUser?.name}</span>
+                <span className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full bg-secondary-container/40 px-2 py-0.5 text-xs font-semibold text-on-secondary-container">
                   <CheckCircle2 size={12} />
                   Terverifikasi
                 </span>
               </p>
-              <p className="text-sm text-on-surface-variant">{profileUser?.phone}</p>
+              <p className="mt-0.5 text-sm text-on-surface-variant">{profileUser?.phone}</p>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-px border-t border-outline-variant/20 bg-outline-variant/10 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-px border-t border-outline-variant/20 bg-outline-variant/10">
           <div className="bg-surface-container-lowest px-6 py-4">
             <p className="text-xs text-on-surface-variant">Email</p>
             <p className="mt-0.5 truncate text-sm font-semibold text-primary">{profileUser?.email ?? '-'}</p>
@@ -159,11 +160,11 @@ export default function Profile() {
           </div>
           <div className="bg-surface-container-lowest px-6 py-4">
             <p className="text-xs text-on-surface-variant">Total Deposit</p>
-            <p className="mt-0.5 truncate text-sm font-semibold text-secondary">{profile?.wallet?.total_deposited ?? 0}</p>
+            <p className="mt-0.5 truncate text-sm font-semibold text-secondary">{rupiah(profile?.wallet?.total_deposited ?? 0)}</p>
           </div>
           <div className="bg-surface-container-lowest px-6 py-4">
             <p className="text-xs text-on-surface-variant">Total Investasi</p>
-            <p className="mt-0.5 truncate text-sm font-semibold text-secondary">{profile?.wallet?.total_invested ?? 0}</p>
+            <p className="mt-0.5 truncate text-sm font-semibold text-secondary">{rupiah(profile?.wallet?.total_invested ?? 0)}</p>
           </div>
         </div>
       </Card>
@@ -186,7 +187,7 @@ export default function Profile() {
         </form>
       </Card>
 
-      <div className="grid gap-5 lg:grid-cols-2">
+      <div className="space-y-5">
         <Card className="p-5">
           <div className="flex items-center gap-2">
             <Lock size={18} className="text-secondary" />
@@ -252,6 +253,24 @@ export default function Profile() {
           </form>
         </Card>
       </div>
+
+      <Card className="p-5">
+        <div className="flex items-center gap-2">
+          <LogOut size={18} className="text-error" />
+          <h3 className="text-base font-semibold text-primary">Keluar</h3>
+        </div>
+        <p className="mt-1 text-sm text-on-surface-variant">Akhiri sesi anda di perangkat ini.</p>
+        <Button
+          variant="danger"
+          onClick={() => {
+            logout();
+            navigate('/login', { replace: true });
+          }}
+          className="mt-4 w-full"
+        >
+          Keluar dari Akun
+        </Button>
+      </Card>
     </div>
   );
 }

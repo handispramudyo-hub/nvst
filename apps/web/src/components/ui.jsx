@@ -195,7 +195,7 @@ export function PageHeader({ title, description, actions }) {
   return (
     <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
       <div>
-        <h1 className="font-headline-lg-mobile text-headline-lg-mobile text-primary md:font-headline-lg md:text-headline-lg">
+        <h1 className="font-headline-lg-mobile text-headline-lg-mobile text-primary">
           {title}
         </h1>
         {description && <p className="mt-1 text-sm text-on-surface-variant">{description}</p>}

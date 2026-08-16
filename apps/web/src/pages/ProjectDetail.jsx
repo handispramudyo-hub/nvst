@@ -54,9 +54,9 @@ const CATEGORY_GRAD = {
 
 function HeroImage({ project }) {
   const CatIcon = { Agrikultur: Leaf, Energi: Zap, Properti: Building2, Teknologi: Cpu }[project.category] ?? Store;
-  if (project.image) return <img src={project.image} alt={project.name} className="h-56 w-full object-cover md:h-72" />;
+  if (project.image) return <img src={project.image} alt={project.name} className="h-56 w-full object-cover" />;
   return (
-    <div className={`flex h-56 w-full items-center justify-center bg-gradient-to-br md:h-72 ${CATEGORY_GRAD[project.category] ?? CATEGORY_GRAD.UMKM}`}>
+    <div className={`flex h-56 w-full items-center justify-center bg-gradient-to-br ${CATEGORY_GRAD[project.category] ?? CATEGORY_GRAD.UMKM}`}>
       <CatIcon size={64} className="text-white/80" />
     </div>
   );
@@ -164,7 +164,7 @@ export default function ProjectDetail() {
 
       <div className="overflow-hidden rounded-2xl shadow-float">
         <HeroImage project={project} />
-        <div className="-mt-8 rounded-t-[32px] bg-surface p-5 md:p-8">
+        <div className="-mt-8 rounded-t-[32px] bg-surface p-5">
           <div className="mb-4 flex flex-wrap items-center gap-2">
             <Badge tone="blue">{project.category ?? 'Umum'}</Badge>
             <StatusBadge status={project.status} />
@@ -174,7 +174,7 @@ export default function ProjectDetail() {
             {project.is_featured && <Badge tone="violet">Featured</Badge>}
           </div>
 
-          <h1 className="font-headline-lg-mobile text-headline-lg-mobile text-primary md:font-headline-lg md:text-headline-lg">
+          <h1 className="font-headline-lg-mobile text-headline-lg-mobile text-primary">
             {project.name}
           </h1>
 
@@ -192,7 +192,7 @@ export default function ProjectDetail() {
             <ProgressBar value={project.funding_progress} className="mt-2" />
           </div>
 
-          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <div className="mt-5 grid grid-cols-2 gap-3">
             <Stat icon={Percent} label="Estimasi Return" value={`${formatPercent(project.estimated_return)} p.a.`} />
             <Stat icon={Clock} label="Durasi" value={`${project.duration_days} hari`} />
             <Stat icon={Wallet} label="Min. Investasi" value={rupiah(project.min_investment)} />
@@ -211,7 +211,7 @@ export default function ProjectDetail() {
         </div>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-2">
+      <div className="space-y-5">
         <div className="space-y-5">
           <Card className="p-5">
             <h3 className="text-base font-semibold text-primary">Deskripsi Proyek</h3>

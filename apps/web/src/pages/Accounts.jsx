@@ -80,7 +80,7 @@ export default function Accounts() {
         description="Simpan rekening bank atau e-wallet untuk menerima dana penarikan"
       />
 
-      <div className="grid gap-5 lg:grid-cols-2">
+      <div className="space-y-5">
         <Card className="p-5">
           <div className="flex items-center gap-2">
             <Plus size={18} className="text-secondary" />

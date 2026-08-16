@@ -15,7 +15,7 @@ export default function QuickActions() {
         <Link
           key={key}
           to={to}
-          className="group flex flex-col items-center justify-center gap-2 rounded-xl border border-outline-variant/10 bg-surface-container-lowest p-3 shadow-sm transition-all hover:shadow-float active:scale-95 md:p-4"
+          className="group flex flex-col items-center justify-center gap-2 rounded-xl border border-outline-variant/10 bg-surface-container-lowest p-3 shadow-sm transition-all hover:shadow-float active:scale-95"
         >
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-container/5 text-primary transition-colors group-hover:bg-primary-container/10">
             <Icon size={22} strokeWidth={2.2} />

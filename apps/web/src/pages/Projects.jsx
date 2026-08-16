@@ -53,7 +53,7 @@ export default function Projects() {
           <SlidersHorizontal size={16} />
           <span className="text-sm font-medium">Filter:</span>
         </div>
-        <div className="w-full sm:w-52">
+        <div className="w-full">
           <Select value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="">Semua Status</option>
             {statuses.map((s) => (
@@ -63,7 +63,7 @@ export default function Projects() {
             ))}
           </Select>
         </div>
-        <div className="w-full sm:w-52">
+        <div className="w-full">
           <Select value={category} onChange={(e) => setCategory(e.target.value)}>
             <option value="">Semua Kategori</option>
             {categories.map((c) => (
@@ -92,7 +92,7 @@ export default function Projects() {
           }
         />
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="space-y-5">
           {filtered.map((p) => (
             <ProjectCard key={p.id} project={p} />
           ))}
