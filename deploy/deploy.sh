@@ -19,13 +19,14 @@ echo "==> [2/9] composer install"
 sudo -u "$APP_USER" bash -c "cd '$BACKEND_DIR' && composer install --no-dev --optimize-autoloader --no-interaction --no-progress"
 
 echo "==> [3/9] backend .env (create once)"
-if [ ! -f "$BACKEND_DIR/.env" ] || ! grep -q "APP_ENV=production" "$BACKEND_DIR/.env"; then
+if [ ! -f "$BACKEND_DIR/.env" ] || ! grep -q "APP_ENV=production" "$BACKEND_DIR/.env" || ! grep -q "^APP_KEY=base64:" "$BACKEND_DIR/.env"; then
   rm -f "$BACKEND_DIR/.env"
   cat > "$BACKEND_DIR/.env" <<EOF
 APP_NAME=NiVEST
 APP_ENV=production
 APP_DEBUG=false
 APP_URL=${APP_URL}
+APP_KEY=
 APP_LOCALE=id
 APP_FALLBACK_LOCALE=en
 APP_FAKER_LOCALE=id_ID
