@@ -80,7 +80,7 @@ export default function Referrals() {
   return (
     <div>
       <PageHeader title="Referral" description="Pantau program referral dan komisi" />
-      <div className="mb-4 flex gap-1 rounded-xl bg-slate-100 p-1 sm:w-fit">
+      <div className="mb-4 flex gap-1 overflow-x-auto rounded-xl bg-slate-100 p-1 sm:w-fit">
         {TABS.map((t) => (
           <button
             key={t.key}
