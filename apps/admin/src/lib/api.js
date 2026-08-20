@@ -17,6 +17,20 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+api.interceptors.response.use(
+  (res) => res,
+  (error) => {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      const current = window.location.pathname;
+      if (current !== '/login') {
+        useAuthStore.getState().logout();
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  },
+);
+
 export function extractErrorMessage(error) {
   if (axios.isAxiosError(error)) {
     const data = error.response?.data;
