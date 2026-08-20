@@ -31,6 +31,9 @@ class WalletTransaction extends Model
     public const TYPE_PROFIT = 'profit';
     public const TYPE_COMMISSION = 'commission';
     public const TYPE_ADJUSTMENT = 'adjustment';
+    public const TYPE_CHECKIN_BONUS = 'checkin_bonus';
+    public const TYPE_REFERRAL_BONUS = 'referral_bonus';
+    public const TYPE_WELCOME_BONUS = 'welcome_bonus';
 
     protected function casts(): array
     {

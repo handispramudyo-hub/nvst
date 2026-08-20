@@ -3,7 +3,7 @@
 use App\Models\Commission;
 use App\Models\Referral;
 
-it('credits the referrer 5% commission on the first investment', function () {
+it('credits the referrer registration bonus + 3% commission on the first investment', function () {
     $referrer = \App\Models\User::factory()->create();
     $token = $referrer->createToken('test')->plainTextToken;
     $referrerHeaders = $this->authHeaders($token);
@@ -30,10 +30,11 @@ it('credits the referrer 5% commission on the first investment', function () {
         'pin' => '123456',
     ], $referredHeaders)->assertCreated();
 
+    // 5000 registration bonus + 6000 (3% of 200000) = 11000
     $this->getJson('/api/v1/wallet', $referrerHeaders)
         ->assertOk()
-        ->assertJsonPath('data.wallet.balance', 10000)
-        ->assertJsonPath('data.wallet.total_commission', 10000);
+        ->assertJsonPath('data.wallet.balance', 11000)
+        ->assertJsonPath('data.wallet.total_commission', 11000);
 
     $this->getJson('/api/v1/referral', $referrerHeaders)
         ->assertOk()
@@ -42,7 +43,7 @@ it('credits the referrer 5% commission on the first investment', function () {
 
     expect(Referral::where('referred_id', $referred->id)->first()->status)->toBe('qualified')
         ->and(Commission::where('user_id', $referrer->id)->count())->toBe(1)
-        ->and((float) Commission::first()->amount)->toBe(10000.0);
+        ->and((float) Commission::first()->amount)->toBe(6000.0);
 });
 
 it('does not credit a commission twice for repeat investments', function () {
@@ -75,7 +76,7 @@ it('does not credit a commission twice for repeat investments', function () {
 
     $this->getJson('/api/v1/wallet', $referrerHeaders)
         ->assertOk()
-        ->assertJsonPath('data.wallet.balance', 10000);
+        ->assertJsonPath('data.wallet.balance', 11000);
 
     expect(Commission::where('user_id', $referrer->id)->count())->toBe(1);
 });

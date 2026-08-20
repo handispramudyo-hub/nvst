@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\V1\Admin\AdminTransactionController;
 use App\Http\Controllers\Api\V1\Admin\AdminUserController;
 use App\Http\Controllers\Api\V1\Admin\AdminWithdrawalController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CheckInController;
 use App\Http\Controllers\Api\V1\DepositController;
 use App\Http\Controllers\Api\V1\InvestmentController;
 use App\Http\Controllers\Api\V1\NotificationController;
@@ -75,6 +76,9 @@ Route::prefix('v1')->group(function () {
         Route::get('referral', [ReferralController::class, 'show'])->name('referral.show');
         Route::get('referral/users', [ReferralController::class, 'users'])->name('referral.users');
         Route::get('referral/commissions', [ReferralController::class, 'commissions'])->name('referral.commissions');
+
+        Route::post('checkin', [CheckInController::class, 'store'])->name('checkin.store');
+        Route::get('checkin/status', [CheckInController::class, 'status'])->name('checkin.status');
 
         Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
         Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');

@@ -95,6 +95,9 @@ class WalletService
             WalletTransaction::TYPE_WITHDRAWAL => 'total_withdrawn',
             WalletTransaction::TYPE_PROFIT => 'total_profit',
             WalletTransaction::TYPE_COMMISSION => 'total_commission',
+            WalletTransaction::TYPE_REFERRAL_BONUS => 'total_commission',
+            WalletTransaction::TYPE_WELCOME_BONUS => 'total_commission',
+            WalletTransaction::TYPE_CHECKIN_BONUS => 'total_profit',
         ];
 
         if (isset($totals[$type])) {

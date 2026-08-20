@@ -24,13 +24,31 @@ class ReferralService
             return null;
         }
 
-        return Referral::firstOrCreate([
+        $referral = Referral::firstOrCreate([
             'referrer_id' => $referrer->id,
             'referred_id' => $referred->id,
         ], [
             'status' => Referral::STATUS_PENDING,
             'commission_amount' => 0,
         ]);
+
+        DB::transaction(function () use ($referrer, $referred) {
+            $this->wallet->credit(
+                $referrer,
+                5000,
+                WalletTransaction::TYPE_REFERRAL_BONUS,
+                "Bonus mengundang {$referred->name}",
+            );
+
+            $this->wallet->credit(
+                $referred,
+                10000,
+                WalletTransaction::TYPE_WELCOME_BONUS,
+                "Selamat datang di NiVEST!",
+            );
+        });
+
+        return $referral;
     }
 
     /**
@@ -48,7 +66,7 @@ class ReferralService
             return;
         }
 
-        $percent = (float) Setting::get('referral', 'commission_percent', 5.0);
+        $percent = (float) Setting::get('referral', 'commission_percent', 3.0);
         $amount = round(((float) $investment->amount * $percent) / 100, 2);
 
         if ($amount <= 0) {

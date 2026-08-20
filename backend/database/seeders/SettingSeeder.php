@@ -17,7 +17,7 @@ class SettingSeeder extends Seeder
         Setting::set('withdrawal', 'fee_percent', '1.0');
         Setting::set('withdrawal', 'min_amount', '50000');
         Setting::set('withdrawal', 'max_amount', '100000000');
-        Setting::set('referral', 'commission_percent', '5.0');
+        Setting::set('referral', 'commission_percent', '3.0');
         Setting::set('general', 'app_name', 'NiVEST');
         Setting::set('general', 'currency', 'IDR');
         Setting::set('general', 'help_phone', '081234567890');

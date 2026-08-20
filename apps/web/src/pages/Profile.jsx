@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { CheckCircle2, KeyRound, Lock, LogOut, UserRound } from 'lucide-react';
+import { CheckCircle2, KeyRound, Lock, LogOut, UserRound, Users, Copy } from 'lucide-react';
 import { api, extractErrorMessage } from '../lib/api';
 import { rupiah } from '../lib/format';
 import { useAuthStore } from '../store/auth';
@@ -253,6 +253,38 @@ export default function Profile() {
           </form>
         </Card>
       </div>
+
+      {/* Referral Section */}
+      <Card className="p-5">
+        <div className="flex items-center gap-2">
+          <Users size={18} className="text-secondary" />
+          <h3 className="text-base font-semibold text-primary">Program Referral</h3>
+        </div>
+        <p className="mt-1 text-sm text-on-surface-variant">
+          Ajak teman dan dapatkan bonus Rp 5.000 + komisi 3% dari investasi mereka.
+        </p>
+        {profileUser?.referral_code && (
+          <div className="mt-3 rounded-xl border border-outline-variant/20 bg-surface-container-low p-4">
+            <p className="text-xs text-on-surface-variant">Kode Referral Anda</p>
+            <div className="mt-1 flex items-center gap-2">
+              <span className="font-display text-lg font-bold tracking-wider text-primary">
+                {profileUser.referral_code}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(profileUser.referral_code);
+                  toast.success('Kode referral disalin!');
+                }}
+                className="rounded-lg p-1.5 text-on-surface-variant transition-colors hover:bg-surface-container-high"
+                title="Salin kode"
+              >
+                <Copy size={16} />
+              </button>
+            </div>
+          </div>
+        )}
+      </Card>
 
       <Card className="p-5">
         <div className="flex items-center gap-2">
