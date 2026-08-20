@@ -100,7 +100,8 @@ export default function ProjectForm() {
   const mutation = useMutation({
     mutationFn: async (formData) => {
       if (isEdit) {
-        return (await api.put(`/admin/projects/${id}`, formData)).data;
+        formData.append('_method', 'PUT');
+        return (await api.post(`/admin/projects/${id}`, formData)).data;
       }
       return (await api.post('/admin/projects', formData)).data;
     },
