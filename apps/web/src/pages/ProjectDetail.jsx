@@ -8,12 +8,14 @@ import {
   CalendarDays,
   CheckCircle2,
   Clock,
+  Coins,
   Cpu,
   FolderOpen,
   Leaf,
   Percent,
   ShieldAlert,
   Store,
+  TrendingUp,
   Wallet,
   Zap,
 } from 'lucide-react';
@@ -122,6 +124,7 @@ export default function ProjectDetail() {
   const expectedReturn = project ? (amountNum * (project.estimated_return ?? 0)) / 100 : 0;
   const durationDays = project?.duration_days || 1;
   const monthlyReturn = expectedReturn / Math.max(1, durationDays / 30);
+  const dailyReturn = expectedReturn / Math.max(1, durationDays);
 
   const belowMin = project ? amountNum > 0 && amountNum < project.min_investment : false;
   const aboveMax = project ? amountNum > project.max_investment : false;
@@ -196,6 +199,16 @@ export default function ProjectDetail() {
             <Stat icon={Percent} label="Estimasi Return" value={`${formatPercent(project.estimated_return)} p.a.`} />
             <Stat icon={Clock} label="Durasi" value={`${project.duration_days} hari`} />
             <Stat icon={Wallet} label="Min. Investasi" value={rupiah(project.min_investment)} />
+            <Stat
+              icon={TrendingUp}
+              label="Penghasilan/Hari"
+              value={`${rupiah((project.min_investment * project.estimated_return) / 100 / project.duration_days)}/hari`}
+            />
+            <Stat
+              icon={Coins}
+              label="Total Return"
+              value={rupiah((project.min_investment * project.estimated_return) / 100)}
+            />
           </div>
 
           <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 border-t border-outline-variant/20 pt-4 text-sm text-on-surface-variant">
@@ -260,6 +273,10 @@ export default function ProjectDetail() {
                   <div className="flex items-center justify-between border-t border-white/10 pt-2 text-primary-fixed-dim">
                     <span>Per bulan</span>
                     <b className="text-secondary-fixed tabular-nums">{rupiah(monthlyReturn)}</b>
+                  </div>
+                  <div className="flex items-center justify-between border-t border-white/10 pt-2 text-primary-fixed-dim">
+                    <span>Per hari</span>
+                    <b className="text-secondary-fixed tabular-nums">{rupiah(dailyReturn)}</b>
                   </div>
                   <div className="flex items-center justify-between border-t border-white/10 pt-2">
                     <span className="text-primary-fixed">Modal + Return</span>
