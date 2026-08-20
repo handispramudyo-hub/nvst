@@ -21,7 +21,7 @@ class StoreProjectRequest extends FormRequest
             'category' => ['required', 'string', 'max:60'],
             'min_investment' => ['required', 'numeric', 'min:1000'],
             'max_investment' => ['required', 'numeric', 'gte:min_investment'],
-            'estimated_return' => ['required', 'numeric', 'min:0.1', 'max:100'],
+            'estimated_return' => ['required', 'numeric', 'min:0.1'],
             'duration_days' => ['required', 'integer', 'min:1', 'max:3650'],
             'risk_level' => ['required', Rule::in(['low', 'medium', 'high'])],
             'start_date' => ['required', 'date'],

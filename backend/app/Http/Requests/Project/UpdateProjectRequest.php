@@ -21,7 +21,7 @@ class UpdateProjectRequest extends FormRequest
             'category' => ['sometimes', 'required', 'string', 'max:60'],
             'min_investment' => ['sometimes', 'required', 'numeric', 'min:1000'],
             'max_investment' => ['sometimes', 'required', 'numeric', 'gte:min_investment'],
-            'estimated_return' => ['sometimes', 'required', 'numeric', 'min:0.1', 'max:100'],
+            'estimated_return' => ['sometimes', 'required', 'numeric', 'min:0.1'],
             'duration_days' => ['sometimes', 'required', 'integer', 'min:1', 'max:3650'],
             'risk_level' => ['sometimes', 'required', Rule::in(['low', 'medium', 'high'])],
             'start_date' => ['sometimes', 'required', 'date'],

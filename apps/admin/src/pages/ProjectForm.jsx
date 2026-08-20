@@ -18,8 +18,7 @@ const schema = z
     max_investment: z.coerce.number({ message: 'Harus berupa angka' }).min(1000, 'Minimal 1.000'),
     estimated_return: z.coerce
       .number({ message: 'Harus berupa angka' })
-      .min(0.1, 'Minimal 0.1%')
-      .max(100, 'Maksimal 100%'),
+      .min(0.1, 'Minimal 0.1%'),
     duration_days: z.coerce.number({ message: 'Harus berupa angka' }).int('Harus bilangan bulat').min(1, 'Minimal 1 hari'),
     risk_level: z.enum(['low', 'medium', 'high']),
     start_date: z.string().min(1, 'Tanggal mulai wajib diisi'),
